@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaChartLine, FaComments } from "react-icons/fa";
 import ChatPopup from "./chatpop";
 
@@ -9,15 +10,14 @@ const AdCard = ({ ad }) => {
   const [predictedROI, setPredictedROI] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const navigate = useNavigate();
 
   const fetchPrediction = async () => {
     const url = `http://localhost:3001/api/predict/${companyEmail}`;
-    console.log("Fetching prediction:", url);
     try {
       const response = await fetch(url);
       if (!response.ok) throw new Error("Failed to fetch prediction");
       const data = await response.json();
-
       const sales = data.predicted_sales;
       const roi = (sales * percentage) / 100;
 
@@ -31,14 +31,24 @@ const AdCard = ({ ad }) => {
 
   return (
     <div className="w-full sm:w-80 p-4 shadow-lg rounded-2xl border border-gray-300 bg-white">
+      {/* Business Name - Clickable */}
       <div className="flex flex-col sm:flex-row justify-between font-semibold text-lg mb-2">
-        <span>{companyName}</span>
+        <span
+          className="text-blue-600 cursor-pointer hover:underline"
+          onClick={() => navigate("/company_uv", { state: { companyEmail } })}
+        >
+          {companyName}
+        </span>
         <span className="text-sm text-gray-500 mt-2 sm:mt-0">{businessType}</span>
       </div>
+
+      {/* Investment and Equity */}
       <div className="flex flex-col sm:flex-row justify-between text-gray-700 mb-2">
         <span>Investment: LKR {investment}</span>
         <span>{percentage}% Equity</span>
       </div>
+
+      {/* Description */}
       <div className="text-sm text-gray-600 mb-3">
         {expanded ? description : `${description.slice(0, 100)}...`}
         {description.length > 100 && (
@@ -50,6 +60,8 @@ const AdCard = ({ ad }) => {
           </button>
         )}
       </div>
+
+      {/* Predict & Chat Buttons */}
       <div className="flex flex-col sm:flex-row justify-between mt-2">
         <button
           className="flex items-center bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 mb-2 sm:mb-0"
@@ -64,6 +76,8 @@ const AdCard = ({ ad }) => {
           <FaComments className="mr-2" /> Chat
         </button>
       </div>
+
+      {/* Prediction Popup */}
       {showPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
@@ -87,11 +101,11 @@ const AdCard = ({ ad }) => {
           </div>
         </div>
       )}
-      {showChat && <ChatPopup
-          companyName={companyName}
-          companyEmail={companyEmail} 
-          onClose={() => setShowChat(false)}
-        />}
+
+      {/* Chat Popup */}
+      {showChat && (
+        <ChatPopup companyName={companyName} companyEmail={companyEmail} onClose={() => setShowChat(false)} />
+      )}
     </div>
   );
 };

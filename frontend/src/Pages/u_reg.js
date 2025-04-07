@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaIdCard, FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"
+import axios from "axios";
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -28,15 +28,14 @@ const RegistrationForm = () => {
     }
   };
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false); 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-   
     const checkAuth = async () => {
       try {
         const response = await axios.get("http://localhost:3001/api/protected", {
-          withCredentials: true, 
+          withCredentials: true,
         });
         if (response.status === 200) {
           setIsAuthenticated(true);
@@ -49,10 +48,9 @@ const RegistrationForm = () => {
     checkAuth();
   }, []);
 
-  
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/"); 
+      navigate("/");
     }
   }, [isAuthenticated, navigate]);
 
@@ -98,7 +96,7 @@ const RegistrationForm = () => {
       });
 
       const data = await response.json();
-      console.log("Response Data:", data); 
+      console.log("Response Data:", data);
 
       if (response.ok) {
         setPopupMessage({
@@ -106,7 +104,7 @@ const RegistrationForm = () => {
           type: "success",
         });
       } else {
-        console.error("Error response:", data); 
+        console.error("Error response:", data);
 
         if (response.status === 400 && data.message?.includes("email")) {
           setPopupMessage({
@@ -130,17 +128,26 @@ const RegistrationForm = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-600 to-white px-4 sm:px-6 lg:px-8">
-      <div className="bg-white p-8 sm:p-12 rounded-lg shadow-xl w-full max-w-2xl">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-600 to-white px-4 sm:px-6 lg:px-8 relative">
+      
+   
+      <div className="bg-white p-8 sm:p-12 rounded-lg shadow-xl w-full max-w-2xl relative">
+  
+      <button
+            type="button"
+            onClick={() => navigate("/start")}
+            className="px-3 py-1 bg-purple-200 text-purple-900 text-sm font-medium rounded hover:bg-purple-300 transition"
+          >
+            ← Back
+          </button>
+
         <h2 className="text-center text-3xl font-bold text-purple-700 mb-6">
           Register as an Investor
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Full Name
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Full Name</label>
               <input
                 type="text"
                 name="fullName"
@@ -150,9 +157,7 @@ const RegistrationForm = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Email Address
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Email Address</label>
               <input
                 type="email"
                 name="email"
@@ -162,9 +167,7 @@ const RegistrationForm = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Phone Number
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Phone Number</label>
               <input
                 type="tel"
                 name="phoneNumber"
@@ -174,9 +177,7 @@ const RegistrationForm = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Username
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Username</label>
               <input
                 type="text"
                 name="username"
@@ -186,9 +187,7 @@ const RegistrationForm = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Password</label>
               <input
                 type="password"
                 name="password"
@@ -198,9 +197,7 @@ const RegistrationForm = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Confirm Password
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
               <input
                 type="password"
                 name="confirmPassword"
@@ -216,11 +213,9 @@ const RegistrationForm = () => {
                 </p>
               )}
             </div>
-            
+
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700">
-                Address
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Address</label>
               <textarea
                 name="address"
                 className="w-full p-3 border rounded"

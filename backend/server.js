@@ -36,7 +36,10 @@ const Ad = require('./models/ads');
 const Image = require('./models/company_images');
 const Post = require('./models/post');
 const Sales = require('./models/sales_schema');
-
+const companyUVRoutes = require("./routes/company_profile_UV");
+const companyBannerUVRoutes = require("./routes/company_banner_UV");
+const companypostUVRoutes = require("./routes/company_post_UV");
+const companysalesUVRoutes = require("./routes/company_sales_uv");
 const sessionSecret = process.env.SESSION_SECRET;
 if (!sessionSecret) {
   throw new Error("❌ Missing SESSION_SECRET in environment variables.");
@@ -455,6 +458,10 @@ app.use('/api/predict', predictionRoutes);
 app.use("/api", messageRoutes);
 app.use("/api", forgotPasswordRoutes);
 app.use("/api", adminRoutes);
+app.use("/api/company", companyUVRoutes);
+app.use("/api/company", companyBannerUVRoutes);
+app.use("/api/posts", companypostUVRoutes);
+app.use("/api/sales", companysalesUVRoutes);
 /* ------------------------------------------
 ✅ Start Server
 ------------------------------------------ */

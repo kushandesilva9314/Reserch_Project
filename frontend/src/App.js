@@ -20,6 +20,7 @@ import Ads_Man from './Pages/ads_management';
 import Ads from './Pages/ads';
 import Sales from './Pages/sales_management';
 import Forgot_Pass from './Pages/ForgotPassword';
+import Company_UV from './Pages/Company_page_UV';
 function App() {
   return (
     <div className="App">
@@ -44,7 +45,7 @@ function App() {
           <Route path="/ads" element={<Ads/>} />
           <Route path="/sales" element={<Sales/>} />
           <Route path="/forgot-password" element={<Forgot_Pass />} />
-
+          <Route path="/company_uv" element={<Company_UV />} />
         </Routes>
       </BrowserRouter>
     </div>

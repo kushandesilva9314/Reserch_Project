@@ -1,45 +1,47 @@
-import { useEffect, useState } from "react"
-import axios from "axios"
-import { motion } from "framer-motion"
-import { Calendar } from "lucide-react"
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { motion } from "framer-motion";
+import { Calendar } from "lucide-react";
 
-const CompanyPosts = () => {
-  const [posts, setPosts] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+const CompanyPostUV = ({ companyEmail }) => {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!companyEmail) return;
+
     const fetchPosts = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/api/user/posts", {
-          withCredentials: true,
-        })
-        setPosts(res.data)
+        const res = await axios.get(
+          `http://localhost:3001/api/posts/company/${companyEmail}`
+        );
+        setPosts(res.data);
       } catch (error) {
-        setError("No posts Uploaded")
-        console.error("Error fetching posts:", error)
+        setError("No posts uploaded by this company.");
+        console.error("Error fetching posts:", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    fetchPosts()
-  }, [])
+    };
+    fetchPosts();
+  }, [companyEmail]);
 
   if (loading)
     return (
       <div className="flex justify-center items-center py-20 bg-gray-900">
         <p className="text-gray-300 font-medium">Loading activities...</p>
       </div>
-    )
+    );
 
   if (error)
     return (
       <div className="text-center text-red-500 bg-gray-900 py-20">
         {error}
       </div>
-    )
+    );
 
-  if (posts.length === 0) return null
+  if (posts.length === 0) return null;
 
   return (
     <div className="bg-gray-900 py-16 px-4">
@@ -143,7 +145,7 @@ const CompanyPosts = () => {
                         {post.description}
                       </p>
 
-                      {/* Tag Info Instead of Read More */}
+                      {/* Tag Info */}
                       <div className="mt-6">
                         <span className="inline-block px-4 py-1 text-sm border border-amber-500 text-amber-400 rounded-full font-semibold tracking-wider bg-gray-900">
                           Shared by Company
@@ -158,7 +160,7 @@ const CompanyPosts = () => {
         </motion.div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CompanyPosts
+export default CompanyPostUV;

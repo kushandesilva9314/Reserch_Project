@@ -11,7 +11,7 @@ import {
 } from "recharts";
 import { motion } from "framer-motion";
 
-const SalesChart = () => {
+const CompanySalesUV = ({ companyEmail }) => {
   const [salesData, setSalesData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -47,11 +47,13 @@ const SalesChart = () => {
   };
 
   useEffect(() => {
+    if (!companyEmail) return;
+
     const fetchSalesData = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/api/sales/get-sales", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `http://localhost:3001/api/sales/company/${companyEmail}`
+        );
         if (response.data && response.data.sales.length === 24) {
           const formattedData = response.data.sales.map((value, index) => ({
             month: getMonthYearLabel(index),
@@ -60,17 +62,18 @@ const SalesChart = () => {
           setSalesData(formattedData);
           calculateStats(response.data.sales);
         } else {
-          setError("No sales information is provided by the company.");
+          setError("No sales data found for this company.");
         }
-      } catch (error) {
-        console.error("Error fetching sales data:", error);
+      } catch (err) {
+        console.error("Error fetching sales data:", err);
         setError("Error fetching sales data. Please try again later.");
       } finally {
         setLoading(false);
       }
     };
+
     fetchSalesData();
-  }, []);
+  }, [companyEmail]);
 
   const formatCurrency = (num) =>
     `LKR ${num.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
@@ -83,16 +86,20 @@ const SalesChart = () => {
       transition={{ duration: 0.6 }}
     >
       <h2 className="text-4xl font-bold text-white mb-12 text-center tracking-wide">
-        📈 Company Sales Insights
+        📊 Company Sales Performance
       </h2>
 
       {loading ? (
-        <div className="text-center text-gray-400 text-lg">Loading sales data...</div>
+        <div className="text-center text-gray-400 text-lg">
+          Loading sales data...
+        </div>
       ) : error ? (
-        <div className="text-center text-red-400 font-semibold text-lg">{error}</div>
+        <div className="text-center text-red-400 font-semibold text-lg">
+          {error}
+        </div>
       ) : (
         <>
-          {/* Cards */}
+          {/* Stat Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {[
               {
@@ -113,20 +120,27 @@ const SalesChart = () => {
               {
                 label: "Sales Growth Rate",
                 value: `${stats.growthRate.toFixed(2)}%`,
-                color: stats.growthRate >= 0 ? "text-green-400" : "text-red-400",
+                color:
+                  stats.growthRate >= 0
+                    ? "text-green-400"
+                    : "text-red-400",
               },
             ].map((stat, i) => (
               <div
                 key={i}
                 className="bg-gradient-to-tr from-gray-800 to-gray-900 p-6 rounded-2xl shadow-lg hover:shadow-blue-500/30 transition-shadow duration-300 text-center border border-gray-700"
               >
-                <p className="text-gray-400 text-sm mb-1 uppercase tracking-wide">{stat.label}</p>
-                <h3 className={`text-2xl font-semibold ${stat.color}`}>{stat.value}</h3>
+                <p className="text-gray-400 text-sm mb-1 uppercase tracking-wide">
+                  {stat.label}
+                </p>
+                <h3 className={`text-2xl font-semibold ${stat.color}`}>
+                  {stat.value}
+                </h3>
               </div>
             ))}
           </div>
 
-          {/* Chart */}
+          {/* Sales Chart */}
           <div className="bg-gray-800 rounded-2xl p-6 shadow-lg">
             <ResponsiveContainer width="100%" height={500}>
               <LineChart
@@ -144,10 +158,15 @@ const SalesChart = () => {
                 />
                 <YAxis
                   tick={{ fontSize: 12, fill: "#cbd5e0" }}
-                  tickFormatter={(value) => `LKR ${value.toLocaleString()}`}
+                  tickFormatter={(value) =>
+                    `LKR ${value.toLocaleString()}`
+                  }
                 />
                 <Tooltip
-                  contentStyle={{ backgroundColor: "#1e293b", borderColor: "#475569" }}
+                  contentStyle={{
+                    backgroundColor: "#1e293b",
+                    borderColor: "#475569",
+                  }}
                   itemStyle={{ color: "#f8fafc" }}
                   formatter={(value) => [`LKR ${value.toLocaleString()}`, "Sales"]}
                 />
@@ -168,4 +187,4 @@ const SalesChart = () => {
   );
 };
 
-export default SalesChart;
+export default CompanySalesUV;

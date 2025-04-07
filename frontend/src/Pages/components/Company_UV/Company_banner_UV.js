@@ -4,20 +4,19 @@ import { motion } from "framer-motion"
 import { FaEnvelope, FaPhone, FaUserTie, FaIndustry, FaInfoCircle } from "react-icons/fa"
 import { AlertCircle, Loader2, RefreshCw } from "lucide-react"
 
-const CompanyBanner = () => {
+const CompanyBannerUV = ({ companyEmail }) => {
   const [company, setCompany] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (!companyEmail) return
+
     const fetchCompanyDetails = async () => {
       try {
         setLoading(true)
-        const response = await axios.get("http://localhost:3001/api/company/protected", {
-          withCredentials: true,
-        })
-        console.log("Company Data:", response.data)
-        setCompany(response.data.user)
+        const response = await axios.get(`http://localhost:3001/api/company/uv/details/${companyEmail}`)
+        setCompany(response.data)
         setError(null)
       } catch (err) {
         setError("Failed to load company details")
@@ -28,17 +27,16 @@ const CompanyBanner = () => {
     }
 
     fetchCompanyDetails()
-  }, [])
+  }, [companyEmail])
 
   const handleRetry = () => {
     setError(null)
     setLoading(true)
     setCompany(null)
     axios
-      .get("http://localhost:3001/api/company/protected", { withCredentials: true })
+      .get(`http://localhost:3001/api/company/uv/details/${companyEmail}`)
       .then((response) => {
-        console.log("Company Data:", response.data)
-        setCompany(response.data.user)
+        setCompany(response.data)
         setError(null)
       })
       .catch((err) => {
@@ -85,21 +83,19 @@ const CompanyBanner = () => {
       className="mx-auto mb-10"
       style={{ maxWidth: "95vw" }}
     >
-      {/* Outer border container */}
       <div className="bg-white rounded-b-lg shadow-2xl overflow-hidden relative">
-  
-        {/* Industrial-style header */}
+        {/* Header */}
         <div className="bg-slate-800 p-4 border-b border-amber-500">
           <div className="flex items-center">
             <div className="w-3 h-12 bg-amber-500 mr-4"></div>
             <h1 className="text-2xl font-bold text-white tracking-tight">COMPANY PROFILE</h1>
           </div>
         </div>
-  
-        {/* Main content area */}
+
+        {/* Content */}
         <div className="bg-white relative">
-          {/* Industrial pattern overlay */}
           <div className="relative bg-slate-50 p-6">
+            {/* Industrial pattern overlay */}
             <div
               className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none"
               style={{
@@ -108,8 +104,8 @@ const CompanyBanner = () => {
                 backgroundSize: "20px 20px",
               }}
             ></div>
-  
-            {/* Company info grid */}
+
+            {/* Main content */}
             <div className="relative z-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <InfoItem icon={<FaEnvelope className="h-5 w-5" />} label="Email Address" value={company.companyEmail} />
@@ -117,8 +113,8 @@ const CompanyBanner = () => {
                 <InfoItem icon={<FaUserTie className="h-5 w-5" />} label="Business Owner" value={company.ownerName} />
                 <InfoItem icon={<FaIndustry className="h-5 w-5" />} label="Business Type" value={company.businessType} />
               </div>
-  
-              {/* Description section with industrial styling */}
+
+              {/* Description section */}
               <div className="mt-8 pt-6 border-t border-slate-200">
                 <div className="flex items-start">
                   <div className="flex-shrink-0 mt-1">
@@ -132,15 +128,14 @@ const CompanyBanner = () => {
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
       </div>
     </motion.div>
   )
-  
 }
-
 
 const InfoItem = ({ icon, label, value }) => (
   <div className="flex items-start">
@@ -154,4 +149,4 @@ const InfoItem = ({ icon, label, value }) => (
   </div>
 )
 
-export default CompanyBanner
+export default CompanyBannerUV

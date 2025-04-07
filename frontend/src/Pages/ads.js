@@ -11,7 +11,7 @@ const Ads = () => {
     percentage: "",
   });
 
-  const [allAds, setAllAds] = useState([]); // Store all ads from API
+  const [allAds, setAllAds] = useState([]); 
   useEffect(() => {
     console.log("Filters applied:", filters);
     fetchAds(filters);
@@ -19,14 +19,14 @@ const Ads = () => {
 
   useEffect(() => {
     applyFilters();
-  }, [filters, allAds]); // Re-filter whenever filters change or ads are fetched
+  }, [filters, allAds]); 
 
   const fetchAds = async () => {
     try {
       const response = await axios.get("http://localhost:3001/api/public-ads", { withCredentials: true });
       console.log("Fetched ads:", response.data);
-      setAllAds(response.data); // Store all ads
-      setAds(response.data); // Initially display all ads
+      setAllAds(response.data); 
+      setAds(response.data); 
     } catch (error) {
       console.error("Error fetching ads:", error.response?.data || error.message);
     }
@@ -38,10 +38,9 @@ const Ads = () => {
     let filteredAds = allAds.filter((ad) => {
       const { businessType, investment, percentage } = filters;
 
-      // Filter Business Type
+     
       const matchesBusinessType = businessType ? ad.businessType === businessType : true;
 
-      // Filter Investment Amount
       const matchesInvestment =
         investment === "<100000"
           ? ad.investment < 100000
@@ -168,7 +167,10 @@ const Ads = () => {
               </div>
             ))
           ) : (
-            <p className="text-center text-gray-500 col-span-2">No ads found</p>
+            <p className="text-center text-gray-500 col-span-2">
+  No ads found. <a href="/login" className="text-blue-500 underline hover:text-blue-700">Login</a> to see ads.
+</p>
+
           )}
         </main>
       </div>

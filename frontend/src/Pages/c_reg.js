@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaFileUpload, FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"
+import axios from "axios";
 
 const CompanyRegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -17,15 +17,14 @@ const CompanyRegistrationForm = () => {
     previewImage: null,
   });
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false); 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-   
     const checkAuth = async () => {
       try {
         const response = await axios.get("http://localhost:3001/api/protected", {
-          withCredentials: true, 
+          withCredentials: true,
         });
         if (response.status === 200) {
           setIsAuthenticated(true);
@@ -38,12 +37,12 @@ const CompanyRegistrationForm = () => {
     checkAuth();
   }, []);
 
-  
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/"); 
+      navigate("/");
     }
   }, [isAuthenticated, navigate]);
+
   const [passwordError, setPasswordError] = useState(false);
   const [popupMessage, setPopupMessage] = useState(null);
 
@@ -91,13 +90,10 @@ const CompanyRegistrationForm = () => {
     }
 
     try {
-      const response = await fetch(
-        "http://localhost:3001/api/company/register",
-        {
-          method: "POST",
-          body: formDataToSend,
-        }
-      );
+      const response = await fetch("http://localhost:3001/api/company/register", {
+        method: "POST",
+        body: formDataToSend,
+      });
 
       const data = await response.json();
       console.log("Response Data:", data);
@@ -113,19 +109,30 @@ const CompanyRegistrationForm = () => {
         });
       }
     } catch (error) {
-        console.error("Error:", error);
+      console.error("Error:", error);
       setPopupMessage({ text: "Server error, try again!", type: "error" });
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-600 to-white px-4">
-      <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-2xl">
+      <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-2xl relative">
+        {/* Back Button */}
+        <div className="absolute top-4 left-4">
+          <button
+            type="button"
+            onClick={() => navigate("/start")}
+            className="px-3 py-1 bg-purple-200 text-purple-900 text-sm font-medium rounded hover:bg-purple-300 transition"
+          >
+            ← Back
+          </button>
+        </div>
+
         <h2 className="text-center text-3xl font-bold text-purple-700 mb-6">
           Company Registration
         </h2>
+
         <form onSubmit={handleSubmit} encType="multipart/form-data">
-          
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -153,7 +160,6 @@ const CompanyRegistrationForm = () => {
             </div>
           </div>
 
-          
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -181,7 +187,6 @@ const CompanyRegistrationForm = () => {
             </div>
           </div>
 
-         
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -216,7 +221,6 @@ const CompanyRegistrationForm = () => {
             </div>
           </div>
 
-        
           <div className="mt-4">
             <label className="block text-sm font-medium text-gray-700">
               Business Type
@@ -233,7 +237,6 @@ const CompanyRegistrationForm = () => {
             </select>
           </div>
 
-        
           <div className="mt-4">
             <label className="block text-sm font-medium text-gray-700">
               Company Description
@@ -246,7 +249,6 @@ const CompanyRegistrationForm = () => {
             ></textarea>
           </div>
 
-          
           <div className="mt-4">
             <label className="block text-sm font-medium text-gray-700">
               Company Registration Copy
@@ -298,6 +300,7 @@ const CompanyRegistrationForm = () => {
           </button>
         </form>
       </div>
+
       {popupMessage && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-md">

@@ -53,6 +53,16 @@ const ForgotPassword = () => {
       <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-purple-500 to-purple-800 animate-gradientBlur"></div>
       
       <div className="bg-white p-8 rounded-lg shadow-2xl max-w-md w-full text-center z-10">
+        
+        {/* Online Image */}
+        <div className="flex justify-center mb-6">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/2919/2919600.png"
+            alt="Forgot Password"
+            className="w-24 h-24"
+          />
+        </div>
+
         {step === 1 && (
           <>
             <h2 className="text-3xl font-bold text-purple-700 mb-6">Forgot Password</h2>

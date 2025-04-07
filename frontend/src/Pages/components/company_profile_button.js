@@ -30,37 +30,57 @@ const CompanyProfileButton = () => {
 
   return (
     <div className="relative" ref={dropdownRef}>
+      {/* Toggle Button */}
       <button
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center px-2 py-1 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition"
+        className="flex items-center gap-2 px-3 py-2 bg-[#1f2937] text-white rounded-lg shadow-md hover:bg-[#374151] transition duration-200"
       >
-        <BsList className="text-xl" />
+        <BsList className="text-2xl" />
+        <span className="hidden md:inline text-sm font-medium">Menu</span>
       </button>
 
+      {/* Dropdown Menu */}
       <AnimatePresence>
         {dropdownOpen && (
           <motion.div
-            initial={{ opacity: 0, x: 10, scale: 0.8 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: 10, scale: 0.8 }}
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute left-full top-0 ml-2 w-40 bg-white text-gray-800 shadow-lg rounded-md border border-gray-300"
+            className="absolute left-full top-0 ml-3 w-48 bg-[#111827] text-white shadow-2xl rounded-xl z-50 border border-gray-700"
           >
-            <ul className="p-1">
-              <li className="px-3 py-2 text-sm hover:bg-blue-100 cursor-pointer rounded-md">
-                <Link to="/company_management">Profile Management</Link>
+            <ul className="p-2">
+              <li>
+                <Link
+                  to="/company_management"
+                  className="block px-4 py-2 rounded-md text-sm hover:bg-[#1f2937] transition"
+                >
+                  Profile Management
+                </Link>
               </li>
-              <li className="px-3 py-2 text-sm hover:bg-blue-100 cursor-pointer rounded-md">
-                <Link to="/sales">Sales Management</Link>
+              <li>
+                <Link
+                  to="/sales"
+                  className="block px-4 py-2 rounded-md text-sm hover:bg-[#1f2937] transition"
+                >
+                  Sales Management
+                </Link>
               </li>
-              <li className="px-3 py-2 text-sm hover:bg-blue-100 cursor-pointer rounded-md">
-                <Link to="/ads_management">Ads Management</Link>
+              <li>
+                <Link
+                  to="/ads_management"
+                  className="block px-4 py-2 rounded-md text-sm hover:bg-[#1f2937] transition"
+                >
+                  Ads Management
+                </Link>
               </li>
-              <li
-                onClick={handleLogout}
-                className="px-3 py-2 text-sm text-red-500 hover:bg-red-100 cursor-pointer rounded-md"
-              >
-                Logout
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 rounded-md text-sm text-red-400 hover:bg-red-900/30 transition"
+                >
+                  Logout
+                </button>
               </li>
             </ul>
           </motion.div>
