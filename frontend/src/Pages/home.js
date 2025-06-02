@@ -19,7 +19,7 @@ function Home() {
       .then((response) => response.json())
       .then((data) => {
         if (data.user) {
-          console.log("✅ User is authenticated:", data.user);
+          console.log("User is authenticated:", data.user);
           setUser(data.user);
 
           
@@ -27,7 +27,7 @@ function Home() {
             navigate("/company");
           }
         } else {
-          console.log("⛔ User is NOT authenticated");
+          console.log("User is NOT authenticated");
           setUser(null);
         }
       })

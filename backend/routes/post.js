@@ -7,7 +7,7 @@ const Post = require("../models/post");
 
 const router = express.Router();
 
-// Multer Storage Configuration
+
 const storage = multer.diskStorage({
     destination: "./uploads/",
     filename: (req, file, cb) => {
@@ -26,22 +26,22 @@ const upload = multer({
     },
 });
 
-// Middleware to authenticate and extract email from token
+
 const authenticate = (req, res, next) => {
     const token = req.cookies.token;
     if (!token) return res.status(401).json({ message: "Unauthorized - No token" });
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) return res.status(403).json({ message: "Forbidden - Invalid token" });
-        req.email = decoded.email; // Extract email from token
+        req.email = decoded.email; 
         next();
     });
 };
 
-// Serve Uploaded Files
+
 router.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
-// ✅ Fetch Logged-in User's Posts
+
 router.get("/user", authenticate, async (req, res) => {
     try {
         const posts = await Post.find({ email: req.email });
@@ -52,7 +52,7 @@ router.get("/user", authenticate, async (req, res) => {
     }
 });
 
-// ✅ Save a Post (Authenticated)
+
 router.post("/add", authenticate, upload.single("image"), async (req, res) => {
     try {
         const { title, description } = req.body;
@@ -75,7 +75,7 @@ router.post("/add", authenticate, upload.single("image"), async (req, res) => {
     }
 });
 
-// ✅ Fetch All Posts
+
 router.get("/all", async (req, res) => {
     try {
         const posts = await Post.find();
@@ -86,7 +86,7 @@ router.get("/all", async (req, res) => {
     }
 });
 
-// ✅ Delete a Post (Authenticated & Owner Only)
+
 router.delete("/delete/:id", authenticate, async (req, res) => {
     try {
         const { id } = req.params;
@@ -97,7 +97,7 @@ router.delete("/delete/:id", authenticate, async (req, res) => {
             return res.status(404).json({ message: "Post not found or unauthorized" });
         }
         
-        // Delete Image from Storage if Exists
+       
         if (post.image) {
             const imagePath = path.join(__dirname, "../", post.image);
             fs.unlink(imagePath, (err) => {

@@ -15,17 +15,17 @@ const Navbar = ({ user }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="fixed top-0 left-0 w-full px-6 py-4 flex justify-between items-center z-50 shadow-md 
-                 bg-gradient-to-r from-purple-500 to-white"
+                 bg-gradient-to-r from-slate-950 to-slate-950"
     >
       {/* Logo */}
       <div>
         <Link to="/">
-          <img src={logo} alt="Logo" className="h-24 md:h-26" />
+          <img src={logo} alt="Logo" className="h-20 md:h-24" />
         </Link>
       </div>
 
       {/* Navigation Links */}
-      <ul className="hidden md:flex space-x-6 font-semibold text-gray-800">
+      <ul className="hidden md:flex space-x-6 font-semibold text-white">
         {[
           { name: "Home", path: "/" },
           { name: "News", path: "/news" },
@@ -33,7 +33,7 @@ const Navbar = ({ user }) => {
           { name: "About", path: "/about" }
         ].map((item, index) => (
           <motion.li key={index} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-            <Link to={item.path} className="hover:text-gray-600 transition">
+            <Link to={item.path} className="hover:text-gray-300 transition">
               {item.name}
             </Link>
           </motion.li>
@@ -47,10 +47,10 @@ const Navbar = ({ user }) => {
           <input
             type="text"
             placeholder="Search..."
-            className="pl-10 pr-4 py-2 rounded-full bg-gray-100 text-gray-700 
-                       focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-sm transition-all"
+            className="pl-10 pr-4 py-2 rounded-full bg-gray-200 text-gray-800 
+                       focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition-all"
           />
-          <FiSearch className="absolute left-3 top-3 text-gray-500" />
+          <FiSearch className="absolute left-3 top-3 text-gray-600" />
         </div>
 
         {/* Profile Button - Only Show If Logged In */}
@@ -61,7 +61,7 @@ const Navbar = ({ user }) => {
         <motion.button
           animate={{ y: [0, -5, 0] }}
           transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-          className="p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition"
+          className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition"
           onClick={() => navigate("/chatbot")}
         >
           <FiMessageCircle className="text-xl text-gray-700" />

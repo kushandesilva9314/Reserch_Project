@@ -7,17 +7,17 @@ const ProfilePicture = require("../models/profile");
 
 const router = express.Router();
 
-// Ensure uploads folder and default image exist
+
 const uploadDir = path.join(__dirname, "..", "uploads");
 const defaultProfilePath = "/uploads/default-profile.png";
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
 
-// Serve static files (profile images)
+
 router.use("/uploads", express.static(uploadDir));
 
-// Multer storage setup
+
 const storage = multer.diskStorage({
   destination: uploadDir,
   filename: (req, file, cb) => {
@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Upload profile picture
+
 router.post("/upload", upload.single("profileImage"), async (req, res) => {
   try {
     const token = req.cookies.token;
@@ -44,7 +44,7 @@ router.post("/upload", upload.single("profileImage"), async (req, res) => {
 
     const imageUrl = `/uploads/${req.file.filename}`;
 
-    // Find existing profile picture and delete it
+    
     const existingImage = await ProfilePicture.findOne({ email });
     if (existingImage && existingImage.imageUrl !== defaultProfilePath) {
       const oldImagePath = path.join(__dirname, "..", existingImage.imageUrl);
@@ -53,7 +53,7 @@ router.post("/upload", upload.single("profileImage"), async (req, res) => {
       }
     }
 
-    // Update or create profile picture entry
+    
     await ProfilePicture.findOneAndUpdate(
       { email },
       { imageUrl },
@@ -67,7 +67,7 @@ router.post("/upload", upload.single("profileImage"), async (req, res) => {
   }
 });
 
-// Get profile picture
+
 router.get("/get", async (req, res) => {
   try {
     const token = req.cookies.token;
@@ -84,7 +84,7 @@ router.get("/get", async (req, res) => {
     if (profilePicture && profilePicture.imageUrl) {
       imageUrl = profilePicture.imageUrl;
     } else {
-      imageUrl = defaultProfilePath; // Use default image if no profile picture
+      imageUrl = defaultProfilePath; 
     }
 
     res.status(200).json({ imageUrl });

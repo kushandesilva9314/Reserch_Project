@@ -25,7 +25,7 @@ const upload = multer({
     },
 });
 
-// Middleware to authenticate and extract email from token
+
 const authenticate = (req, res, next) => {
     const token = req.cookies.token;
     if (!token) return res.status(401).json({ message: "Unauthorized - No token" });
@@ -37,7 +37,7 @@ const authenticate = (req, res, next) => {
     });
 };
 
-// Upload image
+
 router.post("/upload/:type", authenticate, upload.single("image"), async (req, res) => {
     const { type } = req.params;
     if (!["profile", "cover"].includes(type)) {
@@ -62,7 +62,7 @@ router.post("/upload/:type", authenticate, upload.single("image"), async (req, r
     res.status(200).json({ message: `${type} image uploaded successfully`, image: imageDoc });
 });
 
-// Delete image
+
 router.delete("/delete/:type", authenticate, async (req, res) => {
     const { type } = req.params;
     if (!["profile", "cover"].includes(type)) {
@@ -80,7 +80,7 @@ router.delete("/delete/:type", authenticate, async (req, res) => {
     res.status(200).json({ message: `${type} image deleted successfully` });
 });
 
-// Fetch images
+
 router.get("/images", authenticate, async (req, res) => {
     const imageDoc = await Image.findOne({ companyEmail: req.email });
     res.status(200).json(imageDoc || {});

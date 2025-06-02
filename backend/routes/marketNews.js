@@ -10,7 +10,7 @@ router.get("/market-news", async (req, res) => {
     const response = await axios.get(`${NEWS_API_URL}?category=business&language=en&apiKey=${API_KEY}`);
     res.json(response.data);
   } catch (error) {
-    console.error("❌ Error fetching market news:", error);
+    console.error("Error fetching market news:", error);
     res.status(500).json({ message: "Error fetching market news" });
   }
 });

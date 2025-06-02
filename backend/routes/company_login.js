@@ -53,7 +53,7 @@ router.post("/company/login", async (req, res) => {
             },
         });
     } catch (error) {
-        console.error("❌ Company login error:", error);
+        console.error("Company login error:", error);
         res.status(500).json({ message: "Server error" });
     }
 });
@@ -85,7 +85,7 @@ router.get("/company/protected", async (req, res) => {
             res.json({ 
                 user: {
                     ...company.toObject(), 
-                    role: company.role // Include role in response
+                    role: company.role 
                 } 
             });
         } catch (error) {

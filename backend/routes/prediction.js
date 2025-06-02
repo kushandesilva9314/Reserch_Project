@@ -23,7 +23,7 @@ router.get('/:email', async (req, res) => {
       return res.status(500).json({ message: 'Prediction failed', error: predictionData.error });
     }
 
-    res.json({ predicted_sales: predictionData.predicted_sales });
+    res.json({ predicted_sales: predictionData.predicted_sales_lkr });
   } catch (error) {
     console.error('Error fetching prediction:', error);
     res.status(500).json({ message: 'Server error', error: error.message });

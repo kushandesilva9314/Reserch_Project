@@ -1,11 +1,11 @@
-const BASE_URL = "http://localhost:3001/api/content"; // Adjust according to your server
+const BASE_URL = "http://localhost:3001/api/content"; 
 
-// Add new content
+
 export const addContent = async (formData) => {
     try {
         const response = await fetch(`${BASE_URL}/add`, {
             method: "POST",
-            body: formData, // Must be FormData for image uploads
+            body: formData, 
         });
 
         return await response.json();
@@ -15,7 +15,7 @@ export const addContent = async (formData) => {
     }
 };
 
-// Get all content
+
 export const getAllContent = async () => {
     try {
         const response = await fetch(`${BASE_URL}/all`);
@@ -26,7 +26,7 @@ export const getAllContent = async () => {
     }
 };
 
-// Delete content
+
 export const deleteContent = async (id) => {
     try {
         const response = await fetch(`${BASE_URL}/delete/${id}`, {

@@ -5,15 +5,15 @@ const PendingOrg = require("../models/pending_org");
 
 const router = express.Router();
 
-// Configure Multer storage
+
 const storage = multer.diskStorage({
-    destination: "./uploads/", // Ensure the 'uploads' folder exists and is writable
+    destination: "./uploads/", 
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}-${file.originalname}`);
     },
 });
 
-// Add fileFilter for validating file types (only image types allowed)
+
 const upload = multer({
     storage,
     fileFilter: (req, file, cb) => {
@@ -23,13 +23,13 @@ const upload = multer({
         if (!allowedExtensions.includes(fileExt)) {
             return cb(new Error("Invalid file type. Only .jpg and .png images are allowed!"));
         }
-        cb(null, true); // Accept file if valid
+        cb(null, true); 
     },
 });
 
 
 
-// Serve the 'uploads' folder as static files
+
 router.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 router.post("/register", upload.single("registrationCopy"), async (req, res) => {

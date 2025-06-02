@@ -19,7 +19,7 @@ const upload = multer({ storage });
 router.post("/register", upload.single("governmentId"), async (req, res) => {
     try {
         const { fullName, email, phoneNumber, username, password, address } = req.body;
-        const governmentId = req.file ? `/uploads/${req.file.filename}` : null; // Store URL path
+        const governmentId = req.file ? `/uploads/${req.file.filename}` : null; 
 
         if (!fullName || !email || !phoneNumber || !username || !password || !address) {
             return res.status(400).json({ message: "All fields are required." });

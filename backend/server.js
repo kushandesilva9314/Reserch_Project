@@ -42,12 +42,12 @@ const companypostUVRoutes = require("./routes/company_post_UV");
 const companysalesUVRoutes = require("./routes/company_sales_uv");
 const sessionSecret = process.env.SESSION_SECRET;
 if (!sessionSecret) {
-  throw new Error("❌ Missing SESSION_SECRET in environment variables.");
+  throw new Error("Missing SESSION_SECRET in environment variables.");
 }
 
 const jwtSecret = process.env.JWT_SECRET;
 if (!jwtSecret) {
-  throw new Error("❌ Missing JWT_SECRET in environment variables.");
+  throw new Error("Missing JWT_SECRET in environment variables.");
 }
 
 const app = express();
@@ -62,7 +62,7 @@ app.use(
   })
 );
 
-// Middleware
+
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -74,28 +74,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// ✅ Connect to MongoDB
+
 mongoose
   .connect("mongodb://localhost:27017/ResearchProject")
-  .then(() => console.log("✅ Connected to MongoDB"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
-/* ------------------------------------------
-✅ Fetch all pending users
------------------------------------------- */
+
 app.get("/api/pending-users", async (req, res) => {
   try {
-    const users = await PendingUser.find({}, { password: 0 }); // Exclude password
+    const users = await PendingUser.find({}, { password: 0 }); 
     res.status(200).json(users);
   } catch (error) {
-    console.error("❌ Error fetching pending users:", error);
+    console.error("Error fetching pending users:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-/* ------------------------------------------
-✅ Fetch all pending organizations
------------------------------------------- */
+
 app.get("/api/pending-organizations", async (req, res) => {
   try {
     console.log("Fetching pending organizations...");
@@ -110,18 +106,16 @@ app.get("/api/pending-organizations", async (req, res) => {
 
     res.status(200).json(pendingOrgs);
   } catch (error) {
-    console.error("❌ Error fetching pending organizations:", error);
+    console.error("Error fetching pending organizations:", error);
     res.status(500).json({ error: error.message });
   }
 });
 
-/* ------------------------------------------
-✅ Fetch a single pending user by ID
------------------------------------------- */
+
 app.get("/api/pending-users/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await PendingUser.findById(id, { password: 0 }); // Exclude password
+    const user = await PendingUser.findById(id, { password: 0 }); 
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -129,14 +123,12 @@ app.get("/api/pending-users/:id", async (req, res) => {
 
     res.status(200).json(user);
   } catch (error) {
-    console.error("❌ Error fetching user:", error);
+    console.error("Error fetching user:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-/* ------------------------------------------
-✅ Fetch a single pending organization by ID
------------------------------------------- */
+
 app.get("/api/pending-organizations/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -150,14 +142,12 @@ app.get("/api/pending-organizations/:id", async (req, res) => {
 
     res.status(200).json(organization);
   } catch (error) {
-    console.error("❌ Error fetching organization details:", error);
+    console.error("Error fetching organization details:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-/* ------------------------------------------
-✅ Delete a pending organization
------------------------------------------- */
+
 app.delete("/api/pending-organizations/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -171,14 +161,12 @@ app.delete("/api/pending-organizations/:id", async (req, res) => {
 
     res.status(200).json({ message: "Organization deleted successfully" });
   } catch (error) {
-    console.error("❌ Error deleting organization:", error);
+    console.error("Error deleting organization:", error);
     res.status(500).json({ error: "Server error while deleting organization" });
   }
 });
 
-/* ------------------------------------------
-✅ Delete a pending user
------------------------------------------- */
+
 app.delete("/api/pending-users/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -190,18 +178,16 @@ app.delete("/api/pending-users/:id", async (req, res) => {
 
     res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
-    console.error("❌ Error deleting user:", error);
+    console.error("Error deleting user:", error);
     res.status(500).json({ error: "Server error while deleting user" });
   }
 });
 
-/* ------------------------------------------
-✅ Fetch all investors (excluding admins)
------------------------------------------- */
+
 app.get("/api/investors", async (req, res) => {
   try {
     const investors = await Investor.find({
-      role: { $not: { $regex: /^admin$/i } }, // Case-insensitive regex
+      role: { $not: { $regex: /^admin$/i } }, 
     }).lean();
     res.status(200).json(investors);
   } catch (error) {
@@ -210,9 +196,7 @@ app.get("/api/investors", async (req, res) => {
   }
 });
 
-/* ------------------------------------------
-✅ Delete an investor and their profile picture (if exists)
------------------------------------------- */
+
 app.delete("/api/investors/:id", async (req, res) => {
   try {
     const investor = await Investor.findById(req.params.id);
@@ -249,9 +233,7 @@ app.delete("/api/investors/:id", async (req, res) => {
   }
 });
 
-/* ------------------------------------------
-✅ Fetch all approved organizations
------------------------------------------- */
+
 app.get("/api/organizations", async (req, res) => {
   try {
     const organizations = await Company.find();
@@ -262,9 +244,7 @@ app.get("/api/organizations", async (req, res) => {
   }
 });
 
-/* ------------------------------------------
-✅ Fetch a single approved organization by ID
------------------------------------------- */
+
 app.get("/api/organizations/:id", async (req, res) => {
   try {
     const organization = await Company.findById(req.params.id);
@@ -278,9 +258,7 @@ app.get("/api/organizations/:id", async (req, res) => {
   }
 });
 
-/* ------------------------------------------
-✅ Delete an approved organization
------------------------------------------- */
+
 app.delete("/api/organizations/:id", async (req, res) => {
   try {
     const organization = await Company.findByIdAndDelete(req.params.id);
@@ -344,7 +322,7 @@ app.post("/api/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // ✅ Ensure `username` is included in the JWT
+   
     const token = jwt.sign(
       {
         id: user._id,
@@ -369,7 +347,7 @@ app.post("/api/login", async (req, res) => {
       user: { username: user.username, email: user.email, role: user.role },
     });
   } catch (error) {
-    console.error("❌ Login error:", error);
+    console.error(" Login error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
@@ -431,14 +409,12 @@ app.get("/api/profile", async (req, res) => {
 
     res.json(user);
   } catch (error) {
-    console.error("❌ Profile fetch error:", error);
+    console.error(" Profile fetch error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-/* ------------------------------------------
-✅ Import Other Routes
------------------------------------------- */
+
 app.use("/api/auth", authRoutes);
 app.use("/api/company", companyRoutes);
 app.use("/api/companies", companiesRoute);
@@ -462,8 +438,6 @@ app.use("/api/company", companyUVRoutes);
 app.use("/api/company", companyBannerUVRoutes);
 app.use("/api/posts", companypostUVRoutes);
 app.use("/api/sales", companysalesUVRoutes);
-/* ------------------------------------------
-✅ Start Server
------------------------------------------- */
+
 const PORT = 3001;
-app.listen(PORT, () => console.log(`🚀 Server is running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

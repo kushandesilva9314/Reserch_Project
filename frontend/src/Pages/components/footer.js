@@ -13,7 +13,7 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-neutral-800 text-neutral-300 dark:bg-neutral-900 dark:text-neutral-200">
+    <footer className="bg-slate-950 text-neutral-300 dark:bg-slate-950 dark:text-neutral-200">
       {/* Social media section */}
       <div className="flex items-center justify-between border-b border-neutral-700 p-6">
         <span className="hidden lg:block">
@@ -47,7 +47,7 @@ const Footer = () => {
             <img
               src={logo}
               alt="Company Logo"
-              className="h-40 w-auto filter invert"
+              className="h-20 md:h-24"
             />
           </Link>
         </div>

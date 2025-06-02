@@ -9,7 +9,7 @@ dotenv.config();
 
 const router = express.Router();
 
-// Email transporter configuration
+
 const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {

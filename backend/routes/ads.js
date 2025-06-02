@@ -5,7 +5,7 @@ const Company = require("../models/company");
 
 const router = express.Router();
 
-// Middleware to verify JWT and attach company details
+
 const verifyToken = async (req, res, next) => {
     const token = req.cookies.token;
 

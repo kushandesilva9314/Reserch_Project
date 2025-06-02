@@ -16,7 +16,7 @@ const PendingOrgSchema = new mongoose.Schema(
             type: String, 
             required: true, 
             trim: true,
-            match: [/^\+?\d{7,15}$/, "Please enter a valid phone number"], 
+            match: [/^\+?[0-9 ]{7,20}$/, "Please enter a valid phone number"]          
         },
         ownerName: { type: String, required: true, trim: true },
         businessType: { 
@@ -42,7 +42,7 @@ const PendingOrgSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-// ✅ Hash password before saving
+
 PendingOrgSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
     try {
